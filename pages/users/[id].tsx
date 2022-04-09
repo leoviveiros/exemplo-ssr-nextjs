@@ -1,11 +1,26 @@
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import { GetServerSideProps, NextPage } from 'next';
 
-const UserDetailsPage: NextPage = () => {
-    const router = useRouter();
-    const { id } = router.query;
+import axios from 'axios';
 
-    return <h1>User {id} Details</h1>;
+type User = {
+    id: number;
+    name: string;
+};
+
+type UserDetailPageProps = {
+    user: User;
+};
+
+const UserDetailsPage: NextPage<UserDetailPageProps> = (props) => {
+    const { user } = props;
+
+    return (
+        <div>
+            <h1>User Details</h1>
+            <h3>ID: { user.id }</h3>
+            <h3>Name: { user.name }</h3>
+        </div>
+    );
 };
 
 export default UserDetailsPage;
@@ -14,3 +29,13 @@ export default UserDetailsPage;
 // export const getStaticPaths = async () => {
     // TODO get the ids of the most accessed users to build the static pages
 // };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { data } = await axios.get('http://localhost:3001/db.json');
+    const id = Number(context.query.id);
+    const user = data.users.find((user: User) => user.id === id);
+
+    return {
+        props: { user },
+    };
+};

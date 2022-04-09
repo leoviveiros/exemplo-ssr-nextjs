@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { NextPage } from 'next';
+import Link from 'next/link';
 
 type User = {
+    id: string;
     name: string;
 }
 
@@ -17,10 +19,17 @@ const UsersStaticPage: NextPage<UserPageProps> = (props) => {
         <div>
             <h1>Users - {date}</h1>
             <ul>
-                {users && users.map((user: any, key) => <li key={key}>{user.name}</li>)}
+                {users &&
+                    users.map((user: any, key) => (
+                        <li key={key}>
+                            <Link href={'/users/' + user.id}>
+                                <a>{user.name}</a>
+                            </Link>
+                        </li>
+                    ))}
             </ul>
         </div>
-    )
+    );
 }
 
 export const getStaticProps = async () => {
