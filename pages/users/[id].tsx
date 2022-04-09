@@ -9,3 +9,8 @@ const UserDetailsPage: NextPage = () => {
 };
 
 export default UserDetailsPage;
+
+// *** STATIC *** //
+// export const getStaticPaths = async () => {
+    // TODO get the ids of the most accessed users to build the static pages
+// };
