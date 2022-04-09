@@ -7,14 +7,15 @@ type User = {
 
 type UserPageProps = {
     users: User[];
+    date: string;
 }
 
 const UsersStaticPage: NextPage<UserPageProps> = (props) => {
-    const { users } = props;
+    const { users, date } = props;
 
     return (
         <div>
-            <h1>Users</h1>
+            <h1>Users - {date}</h1>
             <ul>
                 {users && users.map((user: any, key) => <li key={key}>{user.name}</li>)}
             </ul>
@@ -28,7 +29,9 @@ export const getStaticProps = async () => {
     return {
         props: {
             users: data.users,
+            date: new Date().toISOString(),
         },
+        revalidate: 10, // rebuild the page every 10 seconds
     };
 }
 

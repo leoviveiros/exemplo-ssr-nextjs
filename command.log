@@ -3,3 +3,7 @@ npx create-next-app --typescript
 
 # http server to mock api
 npx http-server --cors -p 3001 ./public
+
+# ISR (users/static)
+npm bun build
+npm start
