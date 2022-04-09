@@ -1,13 +1,16 @@
 import axios from 'axios';
 import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
 
-const UsersPage: NextPage = () => {
-    const [users, setUsers] = useState([]);
+type User = {
+    name: string;
+}
 
-    useEffect(() => {
-        axios.get('http://localhost:3001/db.json').then(res => setUsers(res.data.users));
-    }, []);
+type UserPageProps = {
+    users: User[];
+}
+
+const UsersPage: NextPage<UserPageProps> = (props) => {
+    const { users } = props;
 
     return (
         <div>
@@ -17,6 +20,16 @@ const UsersPage: NextPage = () => {
             </ul>
         </div>
     )
+}
+
+export const getServerSideProps = async () => {
+    const { data } = await axios.get('http://localhost:3001/db.json');
+
+    return {
+        props: {
+            users: data.users,
+        },
+    };
 }
 
 export default UsersPage;
